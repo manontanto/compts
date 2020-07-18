@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+# compts [-s] source_file dest_dir
+# 
+# manontanto
+#
+import os
+import sys
+import datetime
+import getopt
+import shutil
+
+def usage():
+    print('compts [-s] SourceFile DestDirectory')
+    sys.exit()
+
+def chk_arg(a):
+    if len(a) != 2:
+        print('Unfit args.')
+        usage()
+    if not os.path.isfile(a[0]):
+        print('No SourceFile found.')
+        usage()
+    if not os.path.isdir(a[1]):
+        print('DestDirectory is not exist')
+        usage()
+    s = a[0]
+    d = os.path.join(a[1], a[0])
+    if not os.path.exists(d): # DestFile is not exist.
+        shutil.copy2(s, d)
+        print('DestFile is not exist. Copied')
+        sys.exit()
+    return s, d
+
+def showts(s, d):
+    dta = datetime.datetime.fromtimestamp(os.path.getmtime(s))
+    dtb = datetime.datetime.fromtimestamp(os.path.getmtime(d))
+    print(dta.strftime('%Y-%m-%d %H:%M:%S ' + s))
+    print(dtb.strftime('%Y-%m-%d %H:%M:%S ' + d))
+
+def is_newer(a, b):
+    tsa = os.path.getmtime(a)
+    tsb = os.path.getmtime(b)
+    if int(tsa) > int(tsb):
+        return True
+    return False
+
+def main():
+    ShowTsFlag = None
+    opts, args = getopt.getopt(sys.argv[1:], 's')
+    for o,a in opts:
+        if o == '-s':
+            ShowTsFlag = True # '-s' flag for <Show File Time Stamp>
+    (sf, df) = chk_arg(args)
+#
+    if ShowTsFlag == True:
+        showts(sf, df)
+
+    if is_newer(sf, df):
+        ans = input('Copy ' + sf + ' to ' + '\033[31m' + df + '\033[0m' + ' OK ? [y/N] : ')
+        if ans.lower() in {'y', 'yes'}:
+            try:
+                shutil.copy2(df, df + '.BK')
+                shutil.copy2(sf, df)
+                print('Copied')
+            except OSError as e:
+                print('Error occurred: ', e.args[0])
+                sys.exit()
+
+if __name__ == '__main__':
+    main()
+
