@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # compts [-s] source dest - compare file timestamps & copy when sourcefile is newer
-# 
+#
 # manontanto
 #
 import os
@@ -54,11 +54,12 @@ def copyS2D(s, d):
         except OSError as e:
             print('Error occurred: ', e.args[0])
             sys.exit()
+    else:
+        print('Canceled.')
 
 def main():
     opts, args = getopt.getopt(sys.argv[1:], 's')
     (source, dest) = chk_arg(args)
-#    print(f'Source: {source}  Dest: {dest}') # for debug
     for o,a in opts:
         if o == '-s':
             showts(source, dest)
