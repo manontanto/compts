@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # compts [-s] source dest - compare file timestamps & copy when sourcefile is newer
-#
+# 2020-07-21,18
 # manontanto
 #
 import os
@@ -23,7 +23,7 @@ def chk_file_direc(a):
     ef = "True"
     if len(a) != 2:
         print('Unfit args.')
-        ef = "False"
+        usage()
     if not os.path.isfile(a[0]):
         print('No SourceFile found.')
         ef = "False"
