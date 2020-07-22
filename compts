@@ -19,16 +19,21 @@ def showts(s, d):
     print(dta.strftime('%Y-%m-%d %H:%M:%S ' + s))
     print(dtb.strftime('%Y-%m-%d %H:%M:%S ' + d))
 
-def chk_arg(a):
+def chk_file_direc(a):
+    ef = "True"
     if len(a) != 2:
         print('Unfit args.')
-        usage()
+        ef = "False"
     if not os.path.isfile(a[0]):
         print('No SourceFile found.')
-        usage()
+        ef = "False"
     if not os.path.isdir(a[1]):
         print('DestDirectory is not exist')
+        ef = "False"
+    if ef == "False":
         usage()
+
+def chk_arg(a):
     s = a[0]
     d = os.path.join(a[1], os.path.basename(a[0]))
     if not os.path.exists(d): # DestFile is not exist.
@@ -58,11 +63,17 @@ def copyS2D(s, d):
         print('Canceled.')
 
 def main():
-    opts, args = getopt.getopt(sys.argv[1:], 's')
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 's')
+    except:
+        print('Illegal option.')
+        usage()
+    chk_file_direc(args)
     (source, dest) = chk_arg(args)
     for o,a in opts:
         if o == '-s':
             showts(source, dest)
+#    print(f'Source: {source}  Dest: {dest}')
     if is_newer(source, dest):
         copyS2D(source, dest)
 
