@@ -28,7 +28,7 @@ def chk_file_direc(a):
         print('No SourceFile found.')
         ef = "False"
     if not os.path.isdir(a[1]):
-        print('DestDirectory is not exist')
+        print('DestDirectory is not exist.')
         ef = "False"
     if ef == "False":
         usage()
@@ -38,7 +38,7 @@ def chk_arg(a):
     d = os.path.join(a[1], os.path.basename(a[0]))
     if not os.path.exists(d): # DestFile is not exist.
         shutil.copy2(s, d)
-        print('DestFile is not exist. Copied')
+        print('DestFile is not exist. Copied.')
         sys.exit()
     return s, d
 
@@ -55,7 +55,7 @@ def copyS2D(s, d):
         try:
             shutil.copy2(d, d + '.BK')
             shutil.copy2(s, d)
-            print('Copied')
+            print('Copied.')
         except OSError as e:
             print('Error occurred: ', e.args[0])
             sys.exit()
